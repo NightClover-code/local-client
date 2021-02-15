@@ -1,6 +1,7 @@
-//importing hooks & es build
+//importing hooks & es build & plugins
 import { useState, useEffect, useRef } from 'react';
 import * as esbuild from 'esbuild-wasm';
+import { unpkgPathPlugin } from '../plugins/unpkg-path-plugin';
 //app component
 const App = () => {
   //refs
@@ -8,7 +9,7 @@ const App = () => {
   //local state
   const [input, setInput] = useState('');
   const [code, setCode] = useState('');
-  //init esbuild
+  //initializing esbuild
   const startService = async () => {
     serviceRef.current = await esbuild.startService({
       worker: true,
@@ -21,12 +22,15 @@ const App = () => {
   //onClick Handler
   const onClickHandler = async () => {
     if (serviceRef.current) {
-      //transforming the code to es2015
-      const result = await serviceRef.current.transform(input, {
-        loader: 'jsx',
-        target: 'es2015',
+      //transpiling the code to es2015
+      const result = await serviceRef.current.build({
+        entryPoints: ['index.js'],
+        bundle: true,
+        write: false,
+        plugins: [unpkgPathPlugin()],
       });
-      setCode(result.code);
+      //showing it to the user
+      setCode(result.outputFiles[0].text);
     }
   };
   return (
