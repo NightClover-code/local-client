@@ -10,7 +10,6 @@ const App = () => {
   const iframeRef = useRef<any>();
   //local state
   const [input, setInput] = useState('');
-  const [code, setCode] = useState('');
   //initializing esbuild
   const startService = async () => {
     serviceRef.current = await esbuild.startService({
@@ -24,6 +23,8 @@ const App = () => {
   //onClick Handler
   const onClickHandler = async () => {
     if (serviceRef.current) {
+      //resetting the iframe (security purposes)
+      iframeRef.current.srcdoc = html;
       //transpiling the code to es2015
       const result = await serviceRef.current.build({
         entryPoints: ['index.js'],
@@ -72,11 +73,10 @@ const App = () => {
       <div>
         <button onClick={onClickHandler}>Submit</button>
       </div>
-      <pre>{code}</pre>
       <iframe
         sandbox="allow-scripts"
         src="./test.html"
-        title="test-page"
+        title="preview"
         srcDoc={html}
         ref={iframeRef}
       />
