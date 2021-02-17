@@ -27,11 +27,28 @@ export const fetchPlugin = (code: string) => {
         if (cachedResult) {
           return cachedResult;
         }
+        //getting results
         const { data, request } = await axios.get(args.path);
+        //modifying css files for css imports
+        const escaped = data
+          .replace(/\n/g, '')
+          .replace(/"/g, '\\"')
+          .replace(/'/g, "\\'");
+        //checking if the imported file is javascript or css
+        const fileType = args.path.match(/.css$/) ? 'css' : 'jsx';
+        //adding style tag to DOM when it's a css file
+        const contents =
+          fileType === 'css'
+            ? `
+        const style = document.createElement('style');
+        style.innerText = '${escaped}';
+        document.head.appendChild(style);
+        `
+            : data;
         //result
         const result: esbuild.OnLoadResult = {
           loader: 'jsx',
-          contents: data,
+          contents,
           resolveDir: new URL('./', request.responseURL).pathname,
         };
         //store result in cache
