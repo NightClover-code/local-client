@@ -7,6 +7,7 @@ import { fetchPlugin } from '../plugins/fetch-plugin';
 const App = () => {
   //refs
   const serviceRef = useRef<any>();
+  const iframeRef = useRef<any>();
   //local state
   const [input, setInput] = useState('');
   const [code, setCode] = useState('');
@@ -35,9 +36,27 @@ const App = () => {
         },
       });
       //showing it to the user
-      setCode(result.outputFiles[0].text);
+      iframeRef.current.contentWindow.postMessage(
+        result.outputFiles[0].text,
+        '*'
+      );
     }
   };
+  const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script>
+            window.addEventListener('message', (event) => {
+                eval(event.data);
+            }, false)
+        </script>
+    </body>
+    </html>
+  `;
   return (
     <div>
       <textarea
@@ -48,7 +67,13 @@ const App = () => {
         <button onClick={onClickHandler}>Submit</button>
       </div>
       <pre>{code}</pre>
-      <iframe src="./test.html" title="test-page"></iframe>
+      <iframe
+        sandbox="allow-scripts"
+        src="./test.html"
+        title="test-page"
+        srcDoc={html}
+        ref={iframeRef}
+      />
     </div>
   );
 };
