@@ -6,7 +6,7 @@ import { fetchPlugin } from '../plugins/fetch-plugin';
 //importing components
 import CodeEditor from './CodeEditor';
 //app component
-const App = () => {
+const App: React.FC = () => {
   //refs
   const serviceRef = useRef<any>();
   const iframeRef = useRef<any>();
@@ -68,7 +68,12 @@ const App = () => {
   `;
   return (
     <div>
-      <CodeEditor />
+      <CodeEditor
+        initialValue={
+          " //you can delete this line \n console.log('editor initialized!')"
+        }
+        onChange={(value: string) => setInput(value)}
+      />
       <textarea
         value={input}
         onChange={e => setInput(e.target.value)}
