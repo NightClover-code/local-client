@@ -3,12 +3,13 @@ import { useRef } from 'react';
 //importing styles
 import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import './styles/code-editor.css';
+import './styles/syntax.css';
 //importing editor & types & prettier
 import MonacoEditor, { EditorDidMount } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
 import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
-//importing jsx highliting libraries
+//importing jsx highlighting libraries
 import codeShift from 'jscodeshift';
 import HightLighter from 'monaco-jsx-highlighter';
 //props interface
@@ -24,10 +25,25 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
   const editorMountedHandler: EditorDidMount = (getValue, monacoEditor) => {
     //saving editor instance to use outside editorMountedHandler
     editorRef.current = monacoEditor;
+    //saving code to input state
     monacoEditor.onDidChangeModelContent(() => {
       onChange(getValue());
     });
     monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
+    //highlighting jsx
+    const highlighter = new HightLighter(
+      //@ts-ignore
+      window.monaco,
+      codeShift,
+      monacoEditor
+    );
+    //stop showing console logs on every key press in the editor
+    highlighter.highLightOnDidChangeModelContent(
+      () => {},
+      () => {},
+      undefined,
+      () => {}
+    );
   };
   //formating code on click
   const onFormatHandler = () => {
