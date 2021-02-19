@@ -8,6 +8,9 @@ import MonacoEditor, { EditorDidMount } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
 import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
+//importing jsx highliting libraries
+import codeShift from 'jscodeshift';
+import HightLighter from 'monaco-jsx-highlighter';
 //props interface
 interface CodeEditorProps {
   initialValue: string;
@@ -31,13 +34,15 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
     //getting value from the editor
     const unformatted = editorRef.current?.getModel()?.getValue()!;
     //formating the value
-    const formatted = prettier.format(unformatted, {
-      parser: 'babel',
-      plugins: [parser],
-      semi: true,
-      useTabs: false,
-      singleQuote: true,
-    });
+    const formatted = prettier
+      .format(unformatted, {
+        parser: 'babel',
+        plugins: [parser],
+        semi: true,
+        useTabs: false,
+        singleQuote: true,
+      })
+      .replace(/\n$/, ''); //removing added line by prettier
     //set the formated value to the editor
     editorRef.current?.setValue(formatted);
   };
