@@ -22,12 +22,14 @@ const CodeCell: React.FC = () => {
   return (
     <Resizable direction="vertical">
       <div className="code__cell">
-        <CodeEditor
-          initialValue={
-            " //you can delete this line \n console.log('editor initialized!')"
-          }
-          onChange={(value: string) => setInput(value)}
-        />
+        <Resizable direction="horizental">
+          <CodeEditor
+            initialValue={
+              " //you can delete this line \n console.log('editor initialized!')"
+            }
+            onChange={(value: string) => setInput(value)}
+          />
+        </Resizable>
         <Preview code={code} />
       </div>
     </Resizable>
