@@ -3,7 +3,7 @@ import { useState } from 'react';
 import bundle from '../bundler';
 //importing components
 import CodeEditor from './CodeEditor/CodeEditor';
-import Preview from './Preview/Preview';
+import Preview from './Preview';
 //app component
 const App: React.FC = () => {
   //local state
