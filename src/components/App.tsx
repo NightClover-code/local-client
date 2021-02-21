@@ -4,14 +4,15 @@ import * as esbuild from 'esbuild-wasm';
 import { unpkgPathPlugin } from '../plugins/unpkg-path-plugin';
 import { fetchPlugin } from '../plugins/fetch-plugin';
 //importing components
-import CodeEditor from './CodeEditor';
+import CodeEditor from './CodeEditor/CodeEditor';
+import Preview from './Preview/Preview';
 //app component
 const App: React.FC = () => {
   //refs
   const serviceRef = useRef<any>();
-  const iframeRef = useRef<any>();
   //local state
   const [input, setInput] = useState('');
+  const [code, setCode] = useState('');
   //initializing esbuild
   const startService = async () => {
     serviceRef.current = await esbuild.startService({
@@ -25,8 +26,6 @@ const App: React.FC = () => {
   //onClick Handler
   const onClickHandler = async () => {
     if (serviceRef.current) {
-      //resetting the iframe (security purposes)
-      iframeRef.current.srcdoc = html;
       //transpiling the code to es2015
       const result = await serviceRef.current.build({
         entryPoints: ['index.js'],
@@ -38,34 +37,10 @@ const App: React.FC = () => {
           global: 'window',
         },
       });
-      //showing it to the user
-      iframeRef.current.contentWindow.postMessage(
-        result.outputFiles[0].text,
-        '*'
-      );
+      //updating code state with the results
+      setCode(result.outputFiles[0].text);
     }
   };
-  const html = `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-    </head>
-    <body>
-        <div id="root"></div>
-        <script>
-            window.addEventListener('message', (event) => {
-              try{
-                eval(event.data);
-              }catch(err){
-                const root = document.querySelector('#root');
-                root.innerHTML = '<div><h4>Runtime Error</h4>' + err + '</div>';
-                throw err;
-              }
-            }, false)
-        </script>
-    </body>
-    </html>
-  `;
   return (
     <div>
       <CodeEditor
@@ -81,13 +56,7 @@ const App: React.FC = () => {
       <div>
         <button onClick={onClickHandler}>Submit</button>
       </div>
-      <iframe
-        sandbox="allow-scripts"
-        src="./test.html"
-        title="preview"
-        srcDoc={html}
-        ref={iframeRef}
-      />
+      <Preview code={code} />
     </div>
   );
 };

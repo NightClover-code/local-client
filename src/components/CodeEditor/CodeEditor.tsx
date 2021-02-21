@@ -2,8 +2,8 @@
 import { useRef } from 'react';
 //importing styles
 import 'bulmaswatch/superhero/bulmaswatch.min.css';
-import './styles/code-editor.css';
-import './styles/syntax.css';
+import './code-editor.css';
+import './syntax.css';
 //importing editor & types & prettier
 import MonacoEditor, { EditorDidMount } from '@monaco-editor/react';
 import { editor } from 'monaco-editor';
