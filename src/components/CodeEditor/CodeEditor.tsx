@@ -1,7 +1,5 @@
 //importing hooks
 import { useRef } from 'react';
-//importing styles
-import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import './code-editor.css';
 import './syntax.css';
 //importing editor & types & prettier
