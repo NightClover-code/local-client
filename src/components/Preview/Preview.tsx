@@ -34,11 +34,13 @@ const html = `
 const Preview: React.FC<PreviewProps> = ({ code }) => {
   //refs
   const iframeRef = useRef<any>();
-  //resetting the iframe (security purposes)
   useEffect(() => {
+    //resetting the iframe (security purposes)
     iframeRef.current.srcdoc = html;
     //showing it to the user
-    iframeRef.current.contentWindow.postMessage(code, '*');
+    setTimeout(() => {
+      iframeRef.current.contentWindow.postMessage(code, '*');
+    }, 50);
   }, [code]);
   return (
     <div className="iframe__wrapper">

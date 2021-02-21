@@ -21,13 +21,28 @@ const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
   });
   //getting window height and width when resizing
   useEffect(() => {
+    //timer
+    let timer: any;
     const listener = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+      //debouncing top prevent lag when resizing
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(
+        () =>
+          //updating height and width
+          setDimensions({
+            width: window.innerWidth,
+            height: window.innerHeight,
+          }),
+        100
+      );
     };
     window.addEventListener('resize', listener);
+    //cleanup
+    return () => {
+      window.removeEventListener('resize', listener);
+    };
   }, []);
   //resizable conditional props
   let resizableProps: ResizableBoxProps;
