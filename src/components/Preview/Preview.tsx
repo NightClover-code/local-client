@@ -9,6 +9,11 @@ const html = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
+      <style>
+        html{
+          background-color: #fff;
+        }
+      </style>
     </head>
     <body>
         <div id="root"></div>

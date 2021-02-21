@@ -21,7 +21,7 @@ const CodeCell: React.FC = () => {
   };
   return (
     <Resizable direction="vertical">
-      <div className="code__cell">
+      <div className="code-cell">
         <Resizable direction="horizental">
           <CodeEditor
             initialValue={
