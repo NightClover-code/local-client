@@ -1,0 +1,17 @@
+.iframe__wrapper {
+  position: relative;
+  width: 100%;
+}
+.iframe__wrapper iframe {
+  height: 100%;
+  background-color: #fff;
+}
+.react-draggable-transparent-selection .iframe__wrapper:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  opacity: 0;
+}

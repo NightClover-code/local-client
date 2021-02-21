@@ -1,5 +1,6 @@
-//importing hooks
+//importing hooks & styles
 import { useEffect, useRef } from 'react';
+import './preview.css';
 //interface props
 interface PreviewProps {
   code: string;
@@ -35,13 +36,15 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
     iframeRef.current.contentWindow.postMessage(code, '*');
   }, [code]);
   return (
-    <iframe
-      title="preview-page"
-      sandbox="allow-scripts"
-      src="./test.html"
-      srcDoc={html}
-      ref={iframeRef}
-    />
+    <div className="iframe__wrapper">
+      <iframe
+        title="preview-page"
+        sandbox="allow-scripts"
+        src="./test.html"
+        srcDoc={html}
+        ref={iframeRef}
+      />
+    </div>
   );
 };
 
