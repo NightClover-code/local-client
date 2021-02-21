@@ -19,6 +19,7 @@ const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [width, setWidth] = useState(window.innerWidth * 0.75);
   //getting window height and width when resizing
   useEffect(() => {
     //timer
@@ -28,15 +29,16 @@ const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
       if (timer) {
         clearTimeout(timer);
       }
-      timer = setTimeout(
-        () =>
-          //updating height and width
-          setDimensions({
-            width: window.innerWidth,
-            height: window.innerHeight,
-          }),
-        100
-      );
+      timer = setTimeout(() => {
+        //updating height and width
+        setDimensions({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+        if (window.innerWidth * 0.75 < width) {
+          setWidth(window.innerWidth * 0.75);
+        }
+      }, 100);
     };
     window.addEventListener('resize', listener);
     //cleanup
@@ -58,10 +60,13 @@ const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
     resizableProps = {
       className: 'resize-horizental',
       height: Infinity,
-      width: dimensions.width * 0.75,
+      width,
       resizeHandles: ['e'],
       minConstraints: [dimensions.width * 0.2, Infinity],
       maxConstraints: [dimensions.width * 0.75, Infinity],
+      onResizeStop: (event, data) => {
+        setWidth(data.size.width);
+      },
     };
   }
   return <ResizableBox {...resizableProps}>{children}</ResizableBox>;
