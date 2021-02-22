@@ -1,5 +1,12 @@
 //importing types
 import { ActionType } from '../action-types';
+import { CellTypes } from '../cell';
+//action type
+export type Action =
+  | MoveCellAction
+  | DeleteCellAction
+  | InsertCellBeforeAction
+  | UpdateCellAction;
 //action interfaces
 interface MoveCellAction {
   type: ActionType.MOVE_CELL;
@@ -16,7 +23,7 @@ interface InsertCellBeforeAction {
   type: ActionType.INSERT_CELL_BEFORE;
   payload: {
     id: string;
-    type: 'code' | 'text';
+    type: CellTypes;
   };
 }
 interface UpdateCellAction {
