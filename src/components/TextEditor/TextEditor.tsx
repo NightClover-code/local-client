@@ -9,6 +9,7 @@ const TextEditor: React.FC = () => {
   const divRef = useRef<HTMLDivElement | null>(null);
   //local state
   const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState<string>('# Header');
   //closing editor when clicking out
   useEffect(() => {
     const listener = (event: MouseEvent) => {
@@ -32,14 +33,16 @@ const TextEditor: React.FC = () => {
   //conditional rendering of MDEditor
   if (editing) {
     return (
-      <div ref={divRef}>
-        <MDEditor />
+      <div ref={divRef} className="text-editor card">
+        <div className="card-content">
+          <MDEditor onChange={v => setValue(v || '')} value={value} />
+        </div>
       </div>
     );
   }
   return (
     <div onClick={() => setEditing(true)}>
-      <MDEditor.Markdown source={'# Header'} />
+      <MDEditor.Markdown source={value} />
     </div>
   );
 };
