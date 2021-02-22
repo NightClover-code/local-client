@@ -1,13 +1,19 @@
-.iframe__wrapper {
+.iframe-wrapper {
   position: relative;
   height: 100%;
   flex-grow: 1;
 }
-.iframe__wrapper iframe {
+.iframe-error {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  color: red;
+}
+.iframe-wrapper iframe {
   height: 100%;
   width: 100%;
 }
-.react-draggable-transparent-selection .iframe__wrapper:after {
+.react-draggable-transparent-selection .iframe-wrapper:after {
   content: '';
   position: absolute;
   top: 0;

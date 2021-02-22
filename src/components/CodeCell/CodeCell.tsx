@@ -12,13 +12,16 @@ const CodeCell: React.FC = () => {
   //local state
   const [input, setInput] = useState('');
   const [code, setCode] = useState('');
+  const [err, setErr] = useState('');
   //deboucing user raw code
   useEffect(() => {
     const timer = setTimeout(async () => {
       //getting output code
       const output = await bundle(input);
       //updating code state
-      setCode(output);
+      setCode(output.code);
+      //updating error (in bundling)
+      setErr(output.err);
     }, 500);
     return () => {
       clearTimeout(timer);
@@ -35,7 +38,7 @@ const CodeCell: React.FC = () => {
             onChange={(value: string) => setInput(value)}
           />
         </Resizable>
-        <Preview code={code} />
+        <Preview code={code} bundlingStatus={err} />
       </div>
     </Resizable>
   );
