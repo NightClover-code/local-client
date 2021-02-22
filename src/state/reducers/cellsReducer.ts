@@ -2,7 +2,6 @@
 import { Action } from '../actions';
 import { ActionType } from '../action-types';
 import { Cell } from '../cell';
-import { Statement } from 'jscodeshift';
 //cell state
 interface CellsState {
   data: {
