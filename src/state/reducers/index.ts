@@ -4,5 +4,6 @@ import cellsReducer from './cellsReducer';
 const reducers = combineReducers({
   cells: cellsReducer,
 });
-//ensuring typescript knows the type of our state
 export default reducers;
+//ensuring typescript knows the type of our state
+export type RootState = ReturnType<typeof reducers>;
