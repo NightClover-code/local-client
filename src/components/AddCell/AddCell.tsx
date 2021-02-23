@@ -5,13 +5,14 @@ import { useActions } from '../../hooks/useActions';
 //props interface
 interface AddCellProps {
   nextCellId: string | null;
+  forceVisible?: boolean;
 }
 //add cell component
-const AddCell: React.FC<AddCellProps> = ({ nextCellId }) => {
+const AddCell: React.FC<AddCellProps> = ({ nextCellId, forceVisible }) => {
   //redux actions
   const { insertCellBefore } = useActions();
   return (
-    <div className="add-cell">
+    <div className={`add-cell ${forceVisible && 'force-visible'}`}>
       <div className="add-buttons">
         <button
           onClick={() => insertCellBefore(nextCellId, 'code')}
