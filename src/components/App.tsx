@@ -1,12 +1,12 @@
 //importing styles
 import 'bulmaswatch/superhero/bulmaswatch.min.css';
 //importing components
-import TextEditor from './TextEditor/TextEditor';
+import CellList from './CellList/CellList';
 //app component
 const App: React.FC = () => {
   return (
     <div>
-      <TextEditor />
+      <CellList />
     </div>
   );
 };
