@@ -1,8 +1,11 @@
+//importing random id's
+import { v4 as uuid } from 'uuid';
 //importing types & immer
 import { Action } from '../actions';
 import { ActionType } from '../action-types';
 import { Cell } from '../cell';
 import produce from 'immer';
+import { Statement } from 'jscodeshift';
 //cell state
 interface CellsState {
   data: {
@@ -27,26 +30,45 @@ const cellsReducer = produce(
         //deleting cell & removing it from order
         delete state.data[action.payload];
         state.order = state.order.filter(id => id !== action.payload);
-        return;
+        return state;
       case ActionType.MOVE_CELL:
         const { direction } = action.payload;
+        //looking for cell index
         const index = state.order.findIndex(id => id === action.payload.id);
         const targetIndex = direction === 'up' ? index - 1 : index + 1;
         //preventing getting outside the array
         if (targetIndex < 0 || targetIndex > state.order.length - 1) {
-          return;
+          return state;
         }
         //swapping logic
         state.order[index] = state.order[targetIndex];
         state.order[targetIndex] = action.payload.id;
-        return;
+        return state;
       case ActionType.INSERT_CELL_BEFORE:
-        return;
+        //generating a new cell
+        const cell: Cell = {
+          content: '',
+          id: uuid(),
+          type: action.payload.type,
+        };
+        //updating data
+        state.data[cell.id] = cell;
+        //looking for cell index
+        const foundIndex = state.order.findIndex(
+          id => id === action.payload.id
+        );
+        //inserting at the end of data
+        if (foundIndex < 0) {
+          state.order.push(cell.id);
+        }
+        //updating order
+        state.order.splice(foundIndex, 0, cell.id);
+        return state;
       case ActionType.UPDATE_CELL:
         //updating state without mutating it (immer)
         const { id, content } = action.payload;
         state.data[id].content = content;
-        return;
+        return state;
       default:
         return state;
     }
