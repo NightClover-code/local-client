@@ -30,7 +30,7 @@ export const moveCell = (id: string, direction: Direction): MoveCellAction => {
 };
 //insert cell before
 export const insertCellBefore = (
-  id: string,
+  id: string | null,
   cellType: CellTypes
 ): InsertCellBeforeAction => {
   return {
