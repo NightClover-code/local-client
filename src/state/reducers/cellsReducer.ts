@@ -46,8 +46,7 @@ const cellsReducer = produce(
       case ActionType.INSERT_CELL_BEFORE:
         //generating a new cell
         const cell: Cell = {
-          content:
-            "//you can delete this line \n console.log('editor initialized!')",
+          content: '',
           id: uuid(),
           type: action.payload.type,
         };
