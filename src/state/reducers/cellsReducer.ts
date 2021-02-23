@@ -29,12 +29,22 @@ const cellsReducer = produce(
         state.order = state.order.filter(id => id !== action.payload);
         return;
       case ActionType.MOVE_CELL:
-        return state;
+        const { direction } = action.payload;
+        const index = state.order.findIndex(id => id === action.payload.id);
+        const targetIndex = direction === 'up' ? index - 1 : index + 1;
+        //preventing getting outside the array
+        if (targetIndex < 0 || targetIndex > state.order.length - 1) {
+          return;
+        }
+        //swapping logic
+        state.order[index] = state.order[targetIndex];
+        state.order[targetIndex] = action.payload.id;
+        return;
       case ActionType.INSERT_CELL_BEFORE:
-        return state;
+        return;
       case ActionType.UPDATE_CELL:
-        const { id, content } = action.payload;
         //updating state without mutating it (immer)
+        const { id, content } = action.payload;
         state.data[id].content = content;
         return;
       default:
