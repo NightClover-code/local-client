@@ -5,7 +5,6 @@ import { Action } from '../actions';
 import { ActionType } from '../action-types';
 import { Cell } from '../cell';
 import produce from 'immer';
-import { Statement } from 'jscodeshift';
 //cell state
 interface CellsState {
   data: {
@@ -60,6 +59,7 @@ const cellsReducer = produce(
         //inserting at the end of data
         if (foundIndex < 0) {
           state.order.push(cell.id);
+          return state;
         }
         //updating order
         state.order.splice(foundIndex, 0, cell.id);
