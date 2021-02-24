@@ -2,3 +2,12 @@
   height: calc(100% - 10px);
   display: flex;
 }
+.progress-cover {
+  height: 100%;
+  flex-grow: 1;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  padding-right: 10%;
+  padding-left: 10%;
+}
