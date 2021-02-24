@@ -40,7 +40,6 @@ export interface UpdateCellAction {
 export interface BundleStartAction {
   type: ActionType.BUNDLE_START;
   payload: {
-    loading: boolean;
     id: string;
   };
 }

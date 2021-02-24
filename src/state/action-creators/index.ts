@@ -7,7 +7,11 @@ import {
   MoveCellAction,
   InsertCellAfterAction,
   Direction,
+  Action,
 } from '../actions';
+import { Dispatch } from 'redux';
+//importing bundler
+import bundle from '../../bundler';
 //update cell
 export const updateCell = (id: string, content: string): UpdateCellAction => {
   return {
@@ -47,4 +51,26 @@ export const deleteCell = (id: string): DeleteCellAction => {
     type: ActionType.DELETE_CELL,
     payload: id,
   };
+};
+//start bundling
+export const createBundle = (id: string, rawCode: string) => async (
+  dispatch: Dispatch<Action>
+) => {
+  //start bundling
+  dispatch({
+    type: ActionType.BUNDLE_START,
+    payload: {
+      id,
+    },
+  });
+  //getting bundle result
+  const result = await bundle(rawCode);
+  //completed bundling
+  dispatch({
+    type: ActionType.BUNDLE_COMPLETE,
+    payload: {
+      bundle: result,
+      id,
+    },
+  });
 };
