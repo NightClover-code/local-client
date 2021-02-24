@@ -4,7 +4,6 @@
   right: 0;
   opacity: 0.25;
   transition: opacity 0.2s ease;
-  transform: translateY(-100%);
 }
 .action-bar:hover {
   opacity: 1;
