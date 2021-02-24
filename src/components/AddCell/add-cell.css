@@ -23,7 +23,7 @@
   justify-content: center;
 }
 .add-cell .add-buttons button {
-  margin: 0 60px;
+  margin: 0 40px;
 }
 .add-cell.force-visible {
   opacity: 1;

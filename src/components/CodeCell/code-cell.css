@@ -1,4 +1,4 @@
 .code-cell {
-  height: 100%;
+  height: calc(100% - 10px);
   display: flex;
 }
