@@ -5,7 +5,7 @@ import produce from 'immer';
 import { Bundle } from '../bundle';
 //bundle state interface
 interface BundleState {
-  [key: string]: Bundle;
+  [key: string]: Bundle | undefined;
 }
 //reducer
 const bundlesReducer = produce(
