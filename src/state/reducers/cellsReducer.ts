@@ -43,7 +43,7 @@ const cellsReducer = produce(
         state.order[index] = state.order[targetIndex];
         state.order[targetIndex] = action.payload.id;
         return state;
-      case ActionType.INSERT_CELL_BEFORE:
+      case ActionType.INSERT_CELL_AFTER:
         //generating a new cell
         const cell: Cell = {
           content: '',
@@ -58,11 +58,11 @@ const cellsReducer = produce(
         );
         //inserting at the end of data
         if (foundIndex < 0) {
-          state.order.push(cell.id);
+          state.order.unshift(cell.id);
           return state;
         }
         //updating order
-        state.order.splice(foundIndex, 0, cell.id);
+        state.order.splice(foundIndex + 1, 0, cell.id);
         return state;
       case ActionType.UPDATE_CELL:
         //updating state without mutating it (immer)
