@@ -6,7 +6,9 @@ export type Action =
   | MoveCellAction
   | DeleteCellAction
   | InsertCellAfterAction
-  | UpdateCellAction;
+  | UpdateCellAction
+  | BundleCompleteAction
+  | BundleStartAction;
 //direction type
 export type Direction = 'up' | 'down';
 //action interfaces
@@ -33,5 +35,19 @@ export interface UpdateCellAction {
   payload: {
     id: string;
     content: string;
+  };
+}
+export interface BundleStartAction {
+  type: ActionType.BUNDLE_START;
+  payload: {
+    loading: boolean;
+    id: string;
+  };
+}
+export interface BundleCompleteAction {
+  type: ActionType.BUNDLE_COMPLETE;
+  payload: {
+    id: string;
+    output: string;
   };
 }
