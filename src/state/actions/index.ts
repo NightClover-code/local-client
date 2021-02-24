@@ -48,6 +48,9 @@ export interface BundleCompleteAction {
   type: ActionType.BUNDLE_COMPLETE;
   payload: {
     id: string;
-    output: string;
+    bundle: {
+      code: string;
+      err: string;
+    };
   };
 }
