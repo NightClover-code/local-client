@@ -23,7 +23,7 @@ const initialState: CellsState = {
 };
 //reducer
 const cellsReducer = produce(
-  (state: CellsState = initialState, action: Action) => {
+  (state: CellsState = initialState, action: Action): CellsState => {
     switch (action.type) {
       case ActionType.DELETE_CELL:
         //deleting cell & removing it from order
