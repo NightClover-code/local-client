@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useActions';
+import { useCumulativeCode } from '../../hooks/useCumulativeCode';
 //importing types
 import { Cell } from '../../state';
 //importing components
@@ -19,57 +20,22 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   //redux actions & state
   const { updateCell, createBundle } = useActions();
   const bundle = useTypedSelector(state => state.bundles[cell.id]);
-  const cumulativeCode = useTypedSelector(({ cells: { order, data } }) => {
-    const orderedCells = order.map(id => data[id]);
-    //operatioanal show function
-    const showFunc = `
-      import _React from 'react';
-      import _ReactDOM from 'react-dom';
-      //show function
-      var show = (value) => {
-        const root = document.querySelector('#root');
-        if(value.$$typeof && value.props){
-          _ReactDOM.render(value, root);
-        }else{
-          root.innerHTML = JSON.stringify(value);
-        }
-      }
-      `;
-    //*NON* operational show function
-    const showFuncNotOp = 'var show = () => {}';
-    //cumulated code from all cells
-    const cumulativeCode = [];
-    //joining code from all cells
-    for (let c of orderedCells) {
-      if (c.type === 'code') {
-        if (c.id === cell.id) {
-          cumulativeCode.push(showFunc);
-        } else {
-          cumulativeCode.push(showFuncNotOp);
-        }
-        cumulativeCode.push(c.content);
-      }
-      if (c.id === cell.id) {
-        break;
-      }
-    }
-    return cumulativeCode;
-  });
+  const cumulativeCode = useCumulativeCode(cell.id);
   //deboucing user raw code
   useEffect(() => {
     if (!bundle) {
       //initial bundling & loading
-      createBundle(cell.id, cumulativeCode.join('\n'));
+      createBundle(cell.id, cumulativeCode);
       return;
     }
     const timer = setTimeout(async () => {
-      createBundle(cell.id, cumulativeCode.join('\n'));
+      createBundle(cell.id, cumulativeCode);
     }, 500);
     return () => {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cell.id, cumulativeCode.join('\n'), createBundle]);
+  }, [cell.id, cumulativeCode, createBundle]);
   return (
     <Resizable direction="vertical">
       <div className="code-cell">
