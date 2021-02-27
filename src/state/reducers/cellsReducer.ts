@@ -69,6 +69,24 @@ const cellsReducer = produce(
         const { id, content } = action.payload;
         state.data[id].content = content;
         return state;
+      case ActionType.FETCH_CELLS:
+        //flipping loading to true
+        state.loading = true;
+        state.error = null;
+        return state;
+      case ActionType.FETCH_CELLS_COMPLETE:
+        //fetching cells success
+        state.order = action.payload.map(cell => cell.id);
+        state.data = action.payload.reduce((acc, cell) => {
+          acc[cell.id] = cell;
+          return acc;
+        }, {} as CellsState['data']);
+        return state;
+      case ActionType.FETCH_CELLS_ERROR:
+        //catching errors
+        state.error = action.payload;
+        state.loading = false;
+        return state;
       default:
         return state;
     }
