@@ -1,6 +1,8 @@
-//importing types
+//importing types & axios
+import axios from 'axios';
+import { Dispatch } from 'redux';
 import { ActionType } from '../action-types';
-import { CellTypes } from '../cell';
+import { CellTypes, Cell } from '../cell';
 import {
   UpdateCellAction,
   DeleteCellAction,
@@ -9,7 +11,6 @@ import {
   Direction,
   Action,
 } from '../actions';
-import { Dispatch } from 'redux';
 //importing bundler
 import bundle from '../../bundler';
 //update cell
@@ -73,4 +74,25 @@ export const createBundle = (id: string, rawCode: string) => async (
       id,
     },
   });
+};
+//fetch cells action-creator
+export const fetchCells = () => async (dispatch: Dispatch<Action>) => {
+  //loading
+  dispatch({
+    type: ActionType.FETCH_CELLS,
+  });
+  try {
+    const { data }: { data: Cell[] } = await axios.get('/cells');
+    //getting results
+    dispatch({
+      type: ActionType.FETCH_CELLS_COMPLETE,
+      payload: data,
+    });
+  } catch (err) {
+    //catching error
+    dispatch({
+      type: ActionType.FETCH_CELLS_ERROR,
+      payload: err.message,
+    });
+  }
 };
