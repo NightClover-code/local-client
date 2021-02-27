@@ -11,7 +11,8 @@ export type Action =
   | BundleStartAction
   | FetchCellsAction
   | FetchCellsCompleteAction
-  | FetchCellsErrorAction;
+  | FetchCellsErrorAction
+  | SaveCellErrorAction;
 //direction type
 export type Direction = 'up' | 'down';
 //action interfaces
@@ -65,5 +66,9 @@ export interface FetchCellsCompleteAction {
 }
 export interface FetchCellsErrorAction {
   type: ActionType.FETCH_CELLS_ERROR;
+  payload: string;
+}
+export interface SaveCellErrorAction {
+  type: ActionType.SAVE_CELL_ERROR;
   payload: string;
 }

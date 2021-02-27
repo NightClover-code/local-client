@@ -13,6 +13,7 @@ import {
 } from '../actions';
 //importing bundler
 import bundle from '../../bundler';
+import { RootState } from '../reducers';
 //update cell
 export const updateCell = (id: string, content: string): UpdateCellAction => {
   return {
@@ -92,6 +93,27 @@ export const fetchCells = () => async (dispatch: Dispatch<Action>) => {
     //catching error
     dispatch({
       type: ActionType.FETCH_CELLS_ERROR,
+      payload: err.message,
+    });
+  }
+};
+//saved cells
+export const saveCells = () => async (
+  dispatch: Dispatch<Action>,
+  getState: () => RootState
+) => {
+  //getting data & order state
+  const {
+    cells: { data, order },
+  } = getState();
+  const cells = order.map(id => data[id]);
+  try {
+    //saving cells
+    await axios.post('/cells', { cells });
+  } catch (err) {
+    //catching errors
+    dispatch({
+      type: ActionType.SAVE_CELL_ERROR,
       payload: err.message,
     });
   }
