@@ -1,6 +1,6 @@
 //importing types
 import { ActionType } from '../action-types';
-import { CellTypes } from '../cell';
+import { Cell, CellTypes } from '../cell';
 //action type
 export type Action =
   | MoveCellAction
@@ -8,7 +8,10 @@ export type Action =
   | InsertCellAfterAction
   | UpdateCellAction
   | BundleCompleteAction
-  | BundleStartAction;
+  | BundleStartAction
+  | FetchCellsAction
+  | FetchCellsCompleteAction
+  | FetchCellsErrorAction;
 //direction type
 export type Direction = 'up' | 'down';
 //action interfaces
@@ -52,4 +55,15 @@ export interface BundleCompleteAction {
       err: string;
     };
   };
+}
+export interface FetchCellsAction {
+  type: ActionType.FETCH_CELLS;
+}
+export interface FetchCellsCompleteAction {
+  type: ActionType.FETCH_CELLS_COMPLETE;
+  payload: Cell[];
+}
+export interface FetchCellsErrorAction {
+  type: ActionType.FETCH_CELLS_ERROR;
+  payload: string;
 }
