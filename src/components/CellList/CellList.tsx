@@ -9,7 +9,7 @@ import './cell-list.css';
 //cell list component
 const CellList: React.FC = () => {
   //redux actions
-  const { fetchCells, saveCells } = useActions();
+  const { fetchCells } = useActions();
   //getting cells
   const cells = useTypedSelector(({ cells: { order, data } }) =>
     order.map(id => data[id])
