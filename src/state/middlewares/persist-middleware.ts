@@ -17,7 +17,6 @@ export const persistMiddleware = ({
   return (next: (action: Action) => void) => (action: Action) => {
     //dispatching actions
     next(action);
-
     if (
       [
         ActionType.INSERT_CELL_AFTER,
