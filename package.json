@@ -1,6 +1,6 @@
 {
   "name": "@web-code-cli/local-client",
-  "version": "0.1.0",
+  "version": "5.0.0",
   "files": [
     "build"
   ],
@@ -67,5 +67,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "gitHead": "30a99b331ab21f9d601be75c54880a7655280344"
 }
