@@ -11,19 +11,28 @@ export const persistMiddleware = ({
 }: {
   dispatch: Dispatch<Action>;
   getState: () => RootState;
-}) => (next: (action: Action) => void) => (action: Action) => {
-  //dispatching actions
-  next(action);
+}) => {
+  //decounce timer
+  let timer: any;
+  return (next: (action: Action) => void) => (action: Action) => {
+    //dispatching actions
+    next(action);
 
-  if (
-    [
-      ActionType.INSERT_CELL_AFTER,
-      ActionType.MOVE_CELL,
-      ActionType.UPDATE_CELL,
-      ActionType.DELETE_CELL,
-    ].includes(action.type)
-  ) {
-    //saving cells
-    saveCells()(dispatch, getState);
-  }
+    if (
+      [
+        ActionType.INSERT_CELL_AFTER,
+        ActionType.MOVE_CELL,
+        ActionType.UPDATE_CELL,
+        ActionType.DELETE_CELL,
+      ].includes(action.type)
+    ) {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      // saving cells (debounced)
+      timer = setTimeout(() => {
+        saveCells()(dispatch, getState);
+      }, 250);
+    }
+  };
 };
